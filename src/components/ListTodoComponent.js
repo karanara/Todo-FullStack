@@ -1,12 +1,23 @@
-
+import { useEffect, useState } from "react";
+import { retrieveAllTodosForUserName } from "../api/retrieveAllTodosForUserName";
 const ListTodoComponent = () => {
   const today = new Date();
   const targetDate = new Date(today.getFullYear() + 12, today.getMonth(), today.getDay());
-  const todos = [
-    { id: 1, description: 'Learn Spring Boot and Microservices', done: false, targetDate: targetDate },
-    { id: 2, description: 'Learn React Full Stack', done: false, targetDate: targetDate },
-    { id: 3, description: 'Learn React Dom', done: false, targetDate: targetDate }
-  ];
+  const [todos,setTodos]=useState([])
+  /*const todos = [
+    //{ id: 1, description: 'Learn Spring Boot and Microservices', done: false, targetDate: targetDate },
+    //{ id: 2, description: 'Learn React Full Stack', done: false, targetDate: targetDate },
+    //{ id: 3, description: 'Learn React Dom', done: false, targetDate: targetDate }
+  ];*/
+
+  useEffect(()=>refreshTodos(),[])
+  const refreshTodos = ()=>{
+       retrieveAllTodosForUserName('ramya')
+       .then(response=>{
+         setTodos(response.data)
+       })
+       .catch(error=>setTodos(error))
+  }
 
   return (
     <div className="text-center"> {/* Add the 'text-center' class to center the content */}
