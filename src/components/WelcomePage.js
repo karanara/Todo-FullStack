@@ -1,11 +1,16 @@
 import {useParams, Link} from 'react-router-dom'
 import { useState } from 'react';
-import { HellWorldApiService } from '../api/HelloWorldApiService';
+import { HellWorldApiService, HellWorldApiServicePathVariable } from '../api/HelloWorldApiService';
 const WelcomePage =()=>{
     const {username} = useParams()
    const [info,setInfo] = useState();
     const handleCallHelloWorld = ()=>{
-        HellWorldApiService()
+        /*HellWorldApiService()
+        .then((response)=>handleSuccessResponse(response))
+        .catch((error)=>handleErrorResponse(error))
+        .finally(()=>console.log("ffinal method called"))*/
+
+        HellWorldApiServicePathVariable('ramya')
         .then((response)=>handleSuccessResponse(response))
         .catch((error)=>handleErrorResponse(error))
         .finally(()=>console.log("ffinal method called"))
@@ -25,7 +30,7 @@ const WelcomePage =()=>{
             </div>
             <div>
                 <button className='border bg-green-800 items-center' onClick={handleCallHelloWorld}>CallHelloWorld</button>
-                <h1>{info}</h1>
+                <h1>{info && info.message}</h1>
             </div>
             
         </div>
