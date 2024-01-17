@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { deleteTodoForUserName, retrieveAllTodosForUserName } from "../api/TodoApiService";
 import { useUserCredentials } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 const ListTodoComponent = () => {
   const authContext = useUserCredentials()
   const username = authContext.userName
   const [todos,setTodos]=useState([])
+  const navigate = useNavigate()
   /*const todos = [
     //{ id: 1, description: 'Learn Spring Boot and Microservices', done: false, targetDate: targetDate },
     //{ id: 2, description: 'Learn React Full Stack', done: false, targetDate: targetDate },
@@ -20,7 +22,9 @@ const ListTodoComponent = () => {
        })
        .catch(error=>setTodos(error))
   }
-
+  const UpdateTodo = (id)=>{
+    navigate(`/todo/${id}`)
+  }
   const deleteTodo =(id)=>{
 
     deleteTodoForUserName(username,id)
@@ -49,7 +53,8 @@ const ListTodoComponent = () => {
       <th className="py-2 px-4">Description</th>
       <th className="py-2 px-4">Is Done?</th>
       <th className="py-2 px-4">Target Date</th>
-      <th className="py-2 px-4">Action</th>
+      <th className="py-2 px-4">Delete</th>
+      <th className="py-2 px-4">Update</th>
     </tr>
   </thead>
   <tbody>
@@ -60,6 +65,9 @@ const ListTodoComponent = () => {
         <td className="py-2 px-4">{todo.targetDate.toString()}</td>
         <td className="py-2 px-4">
           <button className="bg-red-500 text-white px-3 py-1 rounded" onClick={()=>deleteTodo(todo.id)}>Delete</button>
+        </td>
+        <td className="py-2 px-4">
+          <button className="bg-red-500 text-white px-3 py-1 rounded" onClick={()=>UpdateTodo(todo.id)}>Update</button>
         </td>
       </tr>
     ))}

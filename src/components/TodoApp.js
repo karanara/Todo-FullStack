@@ -8,6 +8,7 @@ import WelcomePage from "./WelcomePage";
 import Logout from "./Logout";
 import ListTodoComponent from "./ListTodoComponent";
 import ErrorComponent from "./ErrorComponent";
+import TodoComponent from "./TodoComponent";
 const TodoApp = ()=>{
     return (
         <div>
@@ -22,12 +23,15 @@ const TodoApp = ()=>{
                             <WelcomePage/>
                         </AuthenticateContext>
                      }/>
+                        <Route path='/todo/:id' element={<AuthenticateContext><TodoComponent /></AuthenticateContext>} />
+
+  
                      <Route path ='/todos' element={
                         <AuthenticateContext>
                             <ListTodoComponent/>
                         </AuthenticateContext>
                      }/>
-                     
+                   
                      <Route path = '/logout' element={
                         <AuthenticateContext>
                             <Logout/>
