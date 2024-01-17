@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { deleteTodoForUserName, retrieveAllTodosForUserName } from "../api/TodoApiService";
+import { useUserCredentials } from "./AuthContext";
 const ListTodoComponent = () => {
-  const today = new Date();
-  const targetDate = new Date(today.getFullYear() + 12, today.getMonth(), today.getDay());
+  const authContext = useUserCredentials()
+  const username = authContext.userName
   const [todos,setTodos]=useState([])
   /*const todos = [
     //{ id: 1, description: 'Learn Spring Boot and Microservices', done: false, targetDate: targetDate },
@@ -13,7 +14,7 @@ const ListTodoComponent = () => {
   useEffect(()=>refreshTodos(),[])
   const [message,setMessage] = useState(null)
   const refreshTodos = ()=>{
-       retrieveAllTodosForUserName('ramya')
+       retrieveAllTodosForUserName(username)
        .then(response=>{
          setTodos(response.data)
        })
@@ -22,7 +23,7 @@ const ListTodoComponent = () => {
 
   const deleteTodo =(id)=>{
 
-    deleteTodoForUserName('ramya',id)
+    deleteTodoForUserName(username,id)
     .then (
       ()=>{
         setMessage(`Delete of todos with id = ${id} successful`)

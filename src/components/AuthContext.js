@@ -11,13 +11,16 @@ export const useUserCredentials = () => {
 
 const AuthContext = ({ children }) => {
   const [isAuthenticated, setAuthenticated] = useState(false);
+  const [userName,setUserName] = useState(null)
 
   const loginPage = (userName, password) => {
     if (userName === "ramya" && password === "ramya123@") {
       setAuthenticated(true);
+      setUserName(userName)
       return true;
     } else {
       setAuthenticated(false);
+      setUserName(null)
       return false;
     }
   };
@@ -27,7 +30,7 @@ const AuthContext = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ loginPage, isAuthenticated, logout }}>
+    <UserContext.Provider value={{ loginPage, isAuthenticated, logout,userName}}>
       {children}
     </UserContext.Provider>
   );
