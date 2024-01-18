@@ -1,16 +1,15 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useUserCredentials } from "./AuthContext"
 import { useEffect, useState } from "react"
-import { retreiveTodoApi } from "../api/TodoApiService"
+import { retreiveTodoApi,updateTodoApi } from "../api/TodoApiService"
 import { Form,Formik,Field ,ErrorMessage} from "formik"
 const TodoComponent = ()=>{
     const authConext = useUserCredentials()
     const username = authConext.userName
     const [description,setDescription]= useState('')
     const [targetDate,setTargetDate] = useState('')
-    console.log(username)
-    console.log("todocomponent")
     const {id}=useParams()
+    const navigate = useNavigate();
     useEffect(() => {
         retrieveTodos();
       }, [id]);
@@ -23,7 +22,18 @@ const TodoComponent = ()=>{
         .catch((error)=>console.log(error))
     }
     const SubmitValues =(values)=>{
-        console.log(values)
+        const todo ={
+            id:id,
+            username:username,
+            description:values.description,
+            targetDate:values.targetDate,
+            done:false
+        }
+        updateTodoApi(username,id,todo)
+        .then((response)=>{
+            navigate('/todos')
+        })
+        .catch((error)=>console.log(error))
     }
 
     const ValidateValues = (values)=>{
@@ -73,7 +83,7 @@ const TodoComponent = ()=>{
                                     <Field  className="text-red-500 p-2 w-full" type="date" name="targetDate"></Field>                               
                                 </fieldset>
                                 <div>
-                                    <button className="bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
+                                    <button type ="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
                                 </div>
                             </Form>
                         )
