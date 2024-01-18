@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useUserCredentials } from "./AuthContext"
 import { useEffect, useState } from "react"
-import { retreiveTodoApi,updateTodoApi } from "../api/TodoApiService"
+import { createTodoApi, retreiveTodoApi,updateTodoApi } from "../api/TodoApiService"
 import { Form,Formik,Field ,ErrorMessage} from "formik"
 const TodoComponent = ()=>{
     const authConext = useUserCredentials()
@@ -14,12 +14,14 @@ const TodoComponent = ()=>{
         retrieveTodos();
       }, [id]);
     const retrieveTodos= ()=>{
-        retreiveTodoApi(username,id)
+        if(id !== -1 ){
+            retreiveTodoApi(username,id)
         .then((response)=>{
             setDescription(response.data.description)
             setTargetDate(response.data.targetDate)
         })
         .catch((error)=>console.log(error))
+        }
     }
     const SubmitValues =(values)=>{
         const todo ={
@@ -29,11 +31,20 @@ const TodoComponent = ()=>{
             targetDate:values.targetDate,
             done:false
         }
-        updateTodoApi(username,id,todo)
+        if(id === -1 ){
+            createTodoApi(username,todo)
+            .then((response)=>{
+                navigate(`/todos`)
+            })
+            .catch((error)=>console.log(error))
+        }
+        else{
+            updateTodoApi(username,id,todo)
         .then((response)=>{
             navigate('/todos')
         })
         .catch((error)=>console.log(error))
+        }
     }
 
     const ValidateValues = (values)=>{

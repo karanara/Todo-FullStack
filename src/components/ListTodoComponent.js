@@ -25,6 +25,10 @@ const ListTodoComponent = () => {
   const UpdateTodo = (id)=>{
     navigate(`/todo/${id}`)
   }
+
+  const handleCreateTodo =()=>{
+    navigate(`/todo/-1`)
+  }
   const deleteTodo =(id)=>{
 
     deleteTodoForUserName(username,id)
@@ -46,7 +50,7 @@ const ListTodoComponent = () => {
             {message}
         </div>
         }
-      <div className="d-flex justify-content-center"> {/* Use 'd-flex' and 'justify-content-center' to center the table horizontally */}
+      <div className="d-flex justify-content-center"> 
       <table className="table border-collapse w-full mt-4">
   <thead className="bg-gray-800 text-white">
     <tr>
@@ -74,6 +78,9 @@ const ListTodoComponent = () => {
   </tbody>
 </table>
 
+      </div>
+      <div>
+      <button type="button" class="bg-green-500 text-white px-4 py-2 rounded m-5" onClick={handleCreateTodo}>Add new Todo</button>
       </div>
     </div>
   );
