@@ -8,15 +8,29 @@ const Login=()=>{
     const [password,setPassword]=useState("")
     const authContext = useUserCredentials()
     const navigate = useNavigate()
-    const [showErrorMessage,SetShowErrorMessage] = useState(false)
-    const handlSubmit =()=>{
-        if(authContext.loginPage(username,password)){
+    const [showErrorMessage,setShowErrorMessage] = useState(false)
+    /*const handlSubmit =async()=>{
+        if(await authContext.loginPage(username,password)){
             navigate(`/welcome/${username}`)
         }
         else{
             SetShowErrorMessage(true)
         }
-    }
+    }*/
+    const handleSubmit = async () => {
+        try {
+          if (await authContext.loginPage(username, password)) {
+            navigate(`/welcome/${username}`);
+          } else {
+            setShowErrorMessage(true);
+          }
+        } catch (error) {
+          // Handle unexpected errors
+          console.error('Error during login:', error);
+          // You might want to show a generic error message to the user
+        }
+      };
+      
     return (
         <div >
              <div className="flex items-center justify-center">
@@ -35,7 +49,7 @@ const Login=()=>{
                 <input className="border border-black p-2 " value={password} placeholder="password"onChange={(e)=>{
                 setPassword(e.target.value)}}/>
                  </div>
-                 <button className=" border border-black-500 items-center mb-4" onClick={handlSubmit}>Submit</button>
+                 <button className=" border border-black-500 items-center mb-4" onClick={handleSubmit}>Submit</button>
                 </div>
                 
             </div>
