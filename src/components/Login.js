@@ -17,20 +17,13 @@ const Login=()=>{
             SetShowErrorMessage(true)
         }
     }*/
-    const handleSubmit = async () => {
-        try {
-          if (await authContext.loginPage(username, password)) {
-            navigate(`/welcome/${username}`);
-          } else {
-            setShowErrorMessage(true);
-          }
-        } catch (error) {
-          // Handle unexpected errors
-          console.error('Error during login:', error);
-          // You might want to show a generic error message to the user
+    async function handleSubmit() {
+        if(await authContext.loginPage(username, password)){
+            navigate(`/welcome/${username}`)
+        } else {
+            setShowErrorMessage(true)
         }
-      };
-      
+    }
     return (
         <div >
              <div className="flex items-center justify-center">

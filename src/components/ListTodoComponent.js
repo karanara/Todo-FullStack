@@ -22,6 +22,7 @@ const ListTodoComponent = () => {
        })
        .catch(error=>setTodos(error))
   }
+  console.log(todos)
   const UpdateTodo = (id)=>{
     navigate(`/todo/${id}`)
   }
@@ -62,7 +63,7 @@ const ListTodoComponent = () => {
     </tr>
   </thead>
   <tbody>
-    {todos.map(todo => (
+    {todos && todos.map(todo => (
       <tr key={todo.id} className="border-t hover:bg-gray-100">
         <td className="py-2 px-4">{todo.description}</td>
         <td className="py-2 px-4">{todo.done.toString()}</td>

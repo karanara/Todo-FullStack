@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
-import { basicAuthToken } from "../api/TodoApiService";
 import { apiClientCall } from "../api/apiClientCall";
+import { basicauthApi,executeJwtAuthenticationService } from "../api/AuthenticationApi";
 
 export const UserContext = createContext();
 export const useUserCredentials = () => {
@@ -16,10 +16,15 @@ const AuthContext = ({ children }) => {
   const [userName,setUserName] = useState(null)
   const [token,setToken]=useState(null)
 
-    const loginPage = async(userName, password) => {    
+  /* async function  loginPage(userName, password)  {    
      try {
       const baToken = 'Basic ' + window.btoa( userName + ":" + password )
-      const response = await basicAuthToken(baToken)
+      const response = await basicauthApi(baToken,{
+        headers: {
+          'Content-Type': 'application/json',
+          // Other headers if needed
+        }
+      })
       if(response.status===200){
        setAuthenticated(true)
        setUserName(userName)
@@ -43,7 +48,41 @@ const AuthContext = ({ children }) => {
        logout()
        return false
     }
-  }
+  }*/
+  async function loginPage(username, password) {
+
+    try {
+
+        const response = await executeJwtAuthenticationService(username, password)
+
+        if(response.status===200){
+            
+            const jwtToken = 'Bearer ' + response.data.token
+            
+            setAuthenticated(true)
+            setUserName(username)
+            setToken(jwtToken)
+
+            apiClientCall.interceptors.request.use(
+                (config) => {
+                    console.log('intercepting and adding a token')
+                    config.headers.Authorization = jwtToken
+                    return config
+                }
+            )
+
+            return true            
+        } else {
+            logout()
+            return false
+        }    
+    } catch(error) {
+        logout()
+        return false
+    }
+}
+
+
 
  /* const loginPage = (userName, password) => {
     if (userName === "ramya" && password === "ramya123@") {
